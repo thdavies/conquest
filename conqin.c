@@ -212,7 +212,8 @@ init_player()
         char str, key; 
         int star_number;
         int balance,cost,amt,ind; 
-        char iline[81];
+        char iline[81], buff[80];
+        
         do {
                 point(1,18);
                 printw("start at star?\n     ");
@@ -290,19 +291,17 @@ init_player()
                                         ressum(); 
                                         break;
                                 default:
-                                        error_message();
-                                        printw(" !Only M,R during initialize");
+                                        error_message("Only M,R during initialize");
                                 }; /*!= switch (*/
                                 break;
                         default:
-                                error_message();
-                                printw( " !Illegal field %c",key);
+                                error_message("Illegal field %c", key);
                         }; /*switch (*/
                         if ( cost <= balance )
                                 balance = balance - cost;
                         else {
-                                error_message();
-                                printw("  !can't afford %c",key);
+                              	sprintf(buff, "can't afford %c", key);
+                                error_message(buff);
                         };
                 } 
                 while (key != ' ');

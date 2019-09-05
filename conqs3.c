@@ -111,9 +111,15 @@ cle2r_screen()
 
 
 
-error_message()
+error_message(char * err_str)
 {
-        point(1,24);
+    char dummy;
+
+    point(1, 24);
+    printw("! %s !", err_str);
+    get_char(&dummy);
+    point(1, 24);
+    printw("                                ");
 }
 
 get_token(line, Index0, Value0, Token0)
@@ -304,10 +310,10 @@ pr3nt_tf(i)
                         x_cursor = x_cursor - 14;
                         disp_tf(&tf[player][i]);
                         if ( tf[player][i].eta != 0 ) {
-                                printw("%c2m", 0x9b);
+//                                printw("%c2m", 0x9b);
                                 printw("%c%d",
                                 tf[player][i].dest+'A'-1, tf[player][i].eta);
-                                printw("%c0m", 0x9b);
+//                                printw("%c0m", 0x9b);
                         };
                         point(x_cursor, y_cursor+1);
                 };

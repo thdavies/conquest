@@ -106,7 +106,7 @@ inv_player(x,y,planet)
 struct stplanet *planet;
 {
         boolean printtf; 
-        char iline[81]; 
+        char iline[81], buff[80]; 
         char key;
         int cost,amount,ind,new_tf,balance;
         int trash1, trash2;
@@ -147,13 +147,11 @@ struct stplanet *planet;
                                 cost=amount*amb_cost;
                                 if ( planet->inhabitants ==0 ) {
                                         cost = 0;
-                                        error_message();
-                                        printw("  !abandoned planet");
+                                        error_message("abandoned planet");
                                 } 
                                 else if (planet->conquered) {
                                         cost =0;
-                                        error_message();
-                                        printw(" !No amb  on conquered colony ");
+                                        error_message("No amb on conquered colony");
                                 } 
                                 else
                                         if ( cost<=balance ) {
@@ -184,13 +182,11 @@ struct stplanet *planet;
                                 cost=amount * mb_cost;
                                 if ( planet->inhabitants ==0 ) {
                                         cost =0;
-                                        error_message();
-                                        printw("  !abandoned planet");
+                                        error_message("abandoned planet");
                                 } 
                                 else if (planet->conquered) {
                                         cost =0;
-                                        error_message();
-                                        printw(" !No Mb  on conquered colony  ");
+                                        error_message("No mb on conquered colony");
                                 } 
                                 else
                                         if ( cost <= balance ) {
@@ -209,14 +205,13 @@ struct stplanet *planet;
                                 cost= amount;
                                 if ( cost <= balance ) {
                                         if ( cost > planet->inhabitants ) {
-                                                error_message();
-                                                printw(" ! Not enough people for ( trans");
+                                                sprintf(buff, "Not enough people for %d trans", amount);
+                                                error_message(buff);
                                                 cost=0;
                                         } 
                                         else if ( planet->conquered ) {
                                                 cost = 0;
-                                                error_message();
-                                                printw( "!No transports on conqered col");
+                                                error_message("No transports from conqered col");
                                         } 
                                         else {
                                                 tf[player][new_tf].t=tf[player][new_tf].t+amount;
@@ -244,8 +239,7 @@ struct stplanet *planet;
                                 if ( (amount + planet->iu) > (planet->inhabitants*iu_ratio)
                                     ) {
                                         cost = 0;
-                                        error_message();
-                                        printw(" !Can't support that many iu's");
+                                        error_message("Can't support that many iu's");
                                 } 
                                 else if ( cost <= balance ) {
                                         planet->iu=planet->iu+amount;
@@ -284,17 +278,16 @@ struct stplanet *planet;
                                         ressum(); 
                                         break;
                                 default:
-                                        error_message();
-                                        printw(" !Only M,S,C,R allowed      ");
+                                        error_message("Only M,S,C,R allowed");
                                 }; /*switch ( > */
                                 break;
                         default:
-                                error_message();
-                                printw(" !Illegal field %c",key);
+                                sprintf(buff, "Illegal field %c", key);
+                                error_message(buff);
                         }; /*switch (*/
                         if ( cost > balance ) {
-                                error_message();
-                                printw(" !can't affort %3d%c", amount, key);
+                                sprintf(buff, "Can't affort %3d%c", amount, key);
+                                error_message(buff);
                         }
                         else
                                 balance = balance - cost;

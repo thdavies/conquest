@@ -1,6 +1,6 @@
 CC = cc
 #CFLAGS = -Wall
-CFLAGS =
+CFLAGS = -Wno-implicit-function-declaration -Wno-implicit-int -Wno-incompatible-pointer-types
 LDFLAGS = -lcurses -lm
 
 OBJ = conqmain.o conqmp.o conqsubs.o conqs1.o conq2.o conq3.o \
@@ -9,7 +9,7 @@ OBJ = conqmain.o conqmp.o conqsubs.o conqs1.o conq2.o conq3.o \
 	conqmo.o conqin.o
 
 conquest: $(OBJ)
-		$(CC) -o conquest $(LDFLAGS) $(OBJ)
+		$(CC) -o conquest $(OBJ) $(LDFLAGS)
 
 conqmain.o: conqmain.c vars.h structs.h defs.h
 		$(CC) -c $(CFLAGS) conqmain.c

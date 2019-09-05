@@ -89,26 +89,22 @@ check_game_over()
                 dead[ENEMY] = total[player] / total[ENEMY] >= 8;
                 dead[player] = total[ENEMY] / total[player] >=8;
         };
-        game_over = dead[player] || dead[ENEMY] || (turn>100) ||
-            quit_game;
+        game_over = dead[player] || dead[ENEMY] || (turn>100) || quit_game;
         if ( game_over ) {
-                cle2r_screen();
-                printw("*** Game over ***\n");
-                printw("Player: Population in transports:%3d", 
-                                                        transports[player]);
-                printw("  IU's on colonies: %3d  TOTAL: %3d\n", inhabs[player],
-                                                        total[player]);
+                endwin();
+                printf("*** Game Over : Turn %d ***\n", turn);
+                printf("Player: Population in transports:%3d", transports[player]);
+                printf("  IU's on colonies:%4d  TOTAL:%4d\n", inhabs[player], total[player]);
                 addch('\n');
-                printw("Enemy:  Population in transports:%3d",
-                                                        transports[ENEMY]);
-                printw("  IU's on colonies: %3d  TOTAL: %3d\n",
-                                                inhabs[ENEMY], total[ENEMY]);
-                if ( (total[ENEMY] > total[player]) || quit_game  )
-                       printw("**** THE ENEMY HAS CONQUERED THE GALAXY ***\n");
-                else if ( (total[player] > total[ENEMY]) )
-                   printw("*** PLAYER WINS- YOU HAVE SAVED THE GALAXY! ***\n");
-                else
-                        printw("*** DRAWN ***\n");
+                printf("Enemy:  Population in transports:%3d", transports[ENEMY]);
+                printf("  IU's on colonies:%4d  TOTAL:%4d\n", inhabs[ENEMY], total[ENEMY]);
+                if ( (total[ENEMY] > total[player]) || quit_game ) {
+                       printf("**** THE ENEMY HAS CONQUERED THE GALAXY ***\n");
+                } else if ( (total[player] > total[ENEMY]) ) {
+                   printf("*** PLAYER WINS- YOU HAVE SAVED THE GALAXY! ***\n");
+                } else {
+                        printf("*** DRAWN ***\n");
+                }
         };
 }
 

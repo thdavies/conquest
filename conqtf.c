@@ -19,13 +19,11 @@ make_tf()
         if ( ! error ) error= ( tf[player][tf_num].eta!=0) ||
             (tf[player][tf_num].dest==0);
         if ( error  ) {
-                error_message();
-                printw("  !illegal tf");
+                error_message("illegal tf");
         }
         else if ( tf[player][tf_num].blasting ) {
                 error = true;
-                error_message();
-                printw(" !Tf is blasting a planet     ");
+                error_message("Tf is blasting a planet");
         }
         else {
                 point(1,19);
@@ -45,7 +43,7 @@ int *Tf2num, *New2tf;
         char ships; 
         int x,y,n_ships;
         int ind; 
-        char iline[81];
+        char iline[81], buff[80];
         new_tf = *New2tf;  
         tf_num = *Tf2num;
         get_tf(player,&new_tf,tf[player][tf_num].dest);
@@ -92,8 +90,8 @@ int *Tf2num, *New2tf;
                                 tf[player][new_tf].b=tf[player][new_tf].b+n_ships;
                                 break;
                         default:
-                                error_message();
-                                printw("  ! Illegal field %c",ships);
+                                sprintf(buff, "Illegal field %c",ships);
+                                error_message(buff);
                         }; /*switch (*/
                         get_token(iline,&ind,&n_ships,&ships);
                 } 
@@ -112,7 +110,7 @@ join_tf()
 {
         char tf1,tf2; 
         int tf1n,tf2n,ind,value;
-        char iline[81];
+        char iline[81], buff[80];
         printw("oin tfs:");
         ind = 1;
         get_line(iline,&ind,true);
@@ -120,49 +118,47 @@ join_tf()
         get_token( iline,& ind,& value,& tf1);
         tf1n=tf1-'A'+1;
         if ( (tf1n<1) || (tf1n>26) ) {
-                error_message();
-                printw("  ! illegal tf %c",tf1);
+                sprintf(buff, "illegal tf %c",tf1);
+                error_message(buff);
         }
         else if ( (tf[player][tf1n].eta)>0 ) {
-                error_message();
-                printw("  !tf%c is not in normal space ", tf1);
+                sprintf(buff, "tf%c is not in normal space", tf1);
+                error_message(buff);
         }
         else if ( tf[player][tf1n].dest==0 ) {
-                error_message();
-                printw("  !nonexistent tf");
+                error_message("nonexistent tf");
         }
         else if ( tf[player][tf1n].blasting ) {
-                error_message();
-                printw("  !Tf is blasting a planet    ");
+                error_message("Tf is blasting a planet");
         }
         else {
                 get_token(iline,&ind,&value,&tf2);
                 while ( tf2!=' ' ) {
                         tf2n = tf2-'A'+1;
                         if ( (tf2n<1) || (tf2n>26) ) {
-                                error_message();
-                                printw("  !illegal tf %c",tf2);
+                                sprintf(buff, "illegal tf %c", tf2);
+                                error_message(buff);
                         }
                         else if ( tf2n == tf1n) {
-                                error_message();
-                                printw("!Duplicate tf %c",tf2);
+                                sprintf(buff, "Duplicate tf %c",tf2);
+                                error_message(buff);
                         }
                         else if ( (tf[player][tf2n].dest == 0 ) ) {
-                                error_message();
-                                printw("!Nonexistant TF%c",tf2);
+                                sprintf(buff, "Nonexistant TF%c",tf2);
+                                error_message(buff);
                         }
                         else if ( (tf[player][tf2n].x!=tf[player][tf1n].x) ||
                             (tf[player][tf2n].y!= tf[player][tf2n].y) ) {
-                                error_message();
-                                printw("  !tf%c bad location", tf2);
+                                sprintf(buff, "tf%c bad location", tf2);
+                                error_message(buff);
                         }
                         else if ( tf[player][tf2n].eta !=0 ) {
-                                error_message();
-                                printw("  !tf%c is not in normal space ", tf2);
+                                sprintf(buff, "tf%c is not in normal space", tf2);
+                                error_message(buff);
                         }
                         else if ( tf[player][tf2n].blasting ) {
-                                error_message();
-                                printw(" !Tf%c is blasting a planet    ", tf2);
+                                sprintf(buff, "Tf%c is blasting a planet", tf2);
+                                error_message(buff);
                         }
                         else {
                                 joinsilent(player,&tf[player][tf1n],&tf[player][tf2n]);

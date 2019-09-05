@@ -82,8 +82,7 @@ int starnum;
                                 break;
                         default:
                                 cle3r_left();
-                                error_message();
-                                printw(" !Illegal command");
+                                error_message("Illegal command");
                                 break;
                         }; /*switch (*/
                 };

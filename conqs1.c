@@ -12,10 +12,11 @@ boolean *Err0r;
 {
         boolean error;
         int st_num,min_eta; 
-        char istar; 
+        char istar, buff[80]; 
         float r;
         int rge, dst;
         int from_star;
+
         if ( (tf[player][tf_num].eta != 0) ) { /*cancel*/
                 tf[player][tf_num].eta = 0;
                 from_star = 
@@ -31,8 +32,7 @@ boolean *Err0r;
         get_char(&istar);
         st_num = istar-'A'+1;
         if ( (st_num<0) || (st_num>nstars) ) {
-                error_message();
-                printw("  !illegal star");
+                error_message("illegal star");
         }
         else {
                 r=sqrt((float) (((stars[st_num].x-tf[1][tf_num].x)*
@@ -46,9 +46,8 @@ boolean *Err0r;
                         ( (tf[1][tf_num].b != 0) ||
                                 (tf[1][tf_num].c != 0) ||
                                 (tf[1][tf_num].t != 0) ) ) {
-                        error_message();
-                        printw("  !maximum range is %2d",
-                        range[player]);
+                        sprintf(buff, "maximum range is %2d", range[player]);
+                        error_message(buff);
                 }
                 else if ( r < 0.5 ) {
                         point(1,y_cursor + 1);

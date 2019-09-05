@@ -13,7 +13,8 @@ bl2st_planet()
         boolean see, done;
         char iline[81]; 
         int ind,amount; 
-        char dum;
+        char dum, buff[80];
+
         printw("last");
         cle3r_left();
         point(1,19);
@@ -21,32 +22,26 @@ bl2st_planet()
         get_char(&tf_char);
         tf_num = tf_char-'A'+1;
         if ( (tf_num < 1) || (tf_num > 26) ) {
-                error_message();
-                printw(" !Illegal tf");
+                error_message("Illegal tf");
         }
         else if ( tf[player][tf_num].dest==0 ) {
-                error_message();
-                printw(" !Nonexistent tf");
+                error_message("Nonexistent tf");
         }
         else if ( tf[player][tf_num].eta!=0 ) {
-                error_message();
-                printw(" !Tf is not in normal space   ");
+                error_message("Tf is not in normal space");
         }
         else if ( tf[player][tf_num].blasting ) {
-                error_message();
-                printw(" !Tf is already blasting     ");
+                error_message("Tf is already blasting");
         }
         else if ( (tf[player][tf_num].b == 0) && (tf[player][tf_num].c == 0) ) {
-                error_message();
-                printw(" !Tf has no warships         ");
+                error_message("Tf has no warships");
         }
         else {
                 starnum = tf[player][tf_num].dest;
                 pplanet = stars[starnum].first_planet;
                 if ( pplanet==nil ) {
-                        error_message();
-                        printw(" !No planets at star %c       ", 
-                                                        starnum + 'A' - 1);
+                        sprintf(buff, " !No planets at star %c       ", starnum + 'A' - 1);
+                        error_message(buff);
                 }
                 else {
                         point(1,20);
@@ -70,21 +65,18 @@ bl2st_planet()
                                         };
                                 };
                                 if ( pplanet->number != planet_num ) {
-                                     error_message();
-                                     printw(" !No such planet at this star ");
+                                     error_message("No such planet at this star");
                                      pplanet = nil;
                                 };
                         };
                         if ( pplanet != nil ) {
                                 if ( pplanet->team==ENEMY ) {
-                                        error_message();
-                                        printw(" !Conquer it first!");
+                                        error_message("Conquer it first");
                                 }
                                 else if ( (pplanet->team==player) 
                                                 && (! pplanet->conquered)
                                     ) {
-                                        error_message();
-                                        printw(" !That is a human colony!!    ");
+                                        error_message("That is a human colony");
                                 }
                                 else {
                                    factors = weapons[player] 
@@ -215,8 +207,7 @@ inputplayer()
                         tfsum();
                         break;
                 default:
-                        error_message();
-                        printw("  !illegal command");
+                        error_message("illegal command");
                 };  /*switch (*/
         } 
         while (!fin);
@@ -230,35 +221,31 @@ land()
         boolean see;
         int x,y,room_left,tfnum,transports,planet_num;
         int starnum,ind; 
-        char iline[81]; 
+        char iline[81], buff[80];
         boolean found;
         struct stplanet  *pplanet;
+
         printw("and tf:");
         get_char(&tfc);
         cle3r_left();
         tfnum = tfc-'A'+1;
         if ( (tfnum<1) || (tfnum>26) ) {
-                error_message();
-                printw("  !illegal tf");
+                error_message("illegal tf");
         }
         else if ( (tf[player][tfnum].dest==0)) {
-                error_message();
-                printw("  !nonexistent tf");
+                error_message("nonexistent tf");
         }
         else if ( (tf[player][tfnum].eta!=0) ) {
-                error_message();
-                printw("  !tf is not in normal space  ");
+                error_message("tf is not in normal space");
         }
         else {
                 starnum= tf[player][tfnum].dest;
                 pplanet= stars[starnum].first_planet;
                 if ( pplanet==nil ) {
-                        error_message();
-                        printw("  !no planets at this star    ");
+                        error_message("no planets at this star");
                 }
                 else if ( tf_stars[starnum][ENEMY]>0 ) {
-                        error_message();
-                        printw("  !enemy ships present");
+                        error_message("enemy ships present");
                 }
                 else {
                         point(11,18);
@@ -279,15 +266,13 @@ land()
                                 };
                                 if ( ! found ) {
                                         planet_num = 0;
-                                        error_message();
-                                        printw(" !Not a habitable planet ");
+                                        error_message("Not a habitable planet");
                                 }
                         };
                         if ( planet_num != 0 ) {
                                 if ( (pplanet->team == ENEMY) || ((pplanet->team == player)
                                     && (pplanet->conquered))  ) {
-                                        error_message();
-                                        printw("  !Enemy infested planet  !!  ");
+                                        error_message("Enemy infested planet");
                                 }
                                 else {    /*get the number of transports*/
                                         room_left = pplanet->capacity - pplanet->inhabitants;
@@ -297,16 +282,15 @@ land()
                                         get_token(iline,&ind,&transports,&trc);
                                         if ( transports==0 ) transports = tf[player][tfnum].t;
                                         if ( transports < 1 ) {
-                                                error_message();
-                                                printw("  !illegal transports");
+                                                error_message("illegal transports");
                                         }
                                         else if ( transports > tf[player][tfnum].t ) {
-                                                error_message();
-                                                printw("  !only %2d transports in tf", tf[player][tfnum].t);
+                                                sprintf(buff, "only %2d transports in tf", tf[player][tfnum].t);
+                                                error_message(buff);
                                         }
                                         else if ( transports > room_left ) {
-                                                error_message();
-                                                printw("  !only room for %2d transports", room_left);
+                                                sprintf(buff, "only room for %2d transports", room_left);
+                                                error_message(buff);
                                         }
                                         else {
                                                 pplanet->team = player;
@@ -402,23 +386,19 @@ send_tf()
         point(1,19);
         tf_num = tf_move-'A'+1;
         if ( (tf_num<1) || (tf_num>26) ) { 
-                error_message();
-                printw(" !illegal tf");
+                error_message("illegal tf");
         } 
         else if ( tf[player][tf_num].dest==0 ) { 
-                error_message();
-                printw(" !nonexistent tf");
+                error_message("nonexistent tf");
         } 
         else if ( (tf[player][tf_num].eta != 0) &&
             ( (tf[player][tf_num].eta != tf[player][tf_num].origeta) ||
             (tf[player][tf_num].withdrew) )
             ) { 
-                error_message();
-                printw(" !Tf is not in normal space  ");
+                error_message("Tf is not in normal space");
         } 
         else if ( tf[player][tf_num].blasting ) { 
-                error_message();
-                printw(" !Tf is blasting a planet");
+                error_message("Tf is blasting a planet");
         } 
         else {
                 tf[player][tf_num].withdrew = false;
