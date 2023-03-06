@@ -1,0 +1,11 @@
+fix delete char issue
+fix planet attack concluded issue
+fix join bug
+fix distance/maximum print bug
+add some color
+just do all research fields for summary
+just do all taskforces for summary
+just do all colonies for summary
+figure out why the cursor doesnt move sometimes (TERM?)
+move tf dest over 1 space
+erase tf dest when no dest
