@@ -10,6 +10,7 @@ OBJ = conqmain.o conqmp.o conqsubs.o conqs1.o conq2.o conq4.o conq1.o \
 
 conquest: $(OBJ)
 		$(CC) -o conquest $(OBJ) $(LDFLAGS)
+		mv conquest ..
 
 %.o: %.c vars.h structs.h defs.h
 		$(CC) -c $(CFLAGS) $<
